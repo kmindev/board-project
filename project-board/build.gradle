@@ -48,6 +48,9 @@ dependencies {
 
     // 템플릿엔지
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // configuration processor
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 tasks.named('test') {

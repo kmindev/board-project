@@ -1,5 +1,10 @@
 package com.projectboard.response;
 
+import com.projectboard.dto.ArticleDto;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 public record ArticleResponse(
         Long id,
         String title,

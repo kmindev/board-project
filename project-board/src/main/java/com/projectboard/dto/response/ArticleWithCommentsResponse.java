@@ -1,8 +1,7 @@
-package com.projectboard.response;
+package com.projectboard.dto.response;
 
 import com.projectboard.dto.ArticleWithCommentsDto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;

@@ -1,8 +1,7 @@
-package com.projectboard.response;
+package com.projectboard.dto.response;
 
 import com.projectboard.dto.ArticleCommentDto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public record ArticleCommentResponse(

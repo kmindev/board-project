@@ -1,9 +1,13 @@
 package com.projectboard.config;
 
+import com.projectboard.dto.security.BoardPrincipal;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
@@ -13,6 +17,11 @@ public class JpaConfig {
 
     @Bean
     public AuditorAware<String> auditorAware() {
-        return () -> Optional.of("kkm"); // TODO: 스프링 시큐리티로 인증 기능을 붙이게 될 때 수정이 필요
+        return () -> Optional.ofNullable(SecurityContextHolder.getContext()) // scurity 컨텍스트
+                .map(SecurityContext::getAuthentication) // Authentication 정보
+                .filter(Authentication::isAuthenticated) // 로그인 정보
+                .map(Authentication::getPrincipal)
+                .map(BoardPrincipal.class::cast)
+                .map(BoardPrincipal::getUsername);
     }
 }

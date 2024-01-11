@@ -124,13 +124,14 @@ public class ArticleCommentServiceTest {
     void givenArticleCommentId_whenDeletingArticleComment_thenDeletesArticleComment() {
         // Given
         Long articleCommentId = 1L;
-        willDoNothing().given(articleCommentRepository).deleteById(articleCommentId);
+        String userId = "kkm";
+        willDoNothing().given(articleCommentRepository).deleteByIdAndUserAccount_UserId(articleCommentId, userId);
 
         // When
-        sut.deleteArticleComment(articleCommentId);
+        sut.deleteArticleComment(articleCommentId, userId);
 
         // Then
-        then(articleCommentRepository).should().deleteById(articleCommentId);
+        then(articleCommentRepository).should().deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
 
     private ArticleCommentDto createArticleCommentDto(String content) {
@@ -140,23 +141,23 @@ public class ArticleCommentServiceTest {
                 createUserAccountDto(),
                 content,
                 LocalDateTime.now(),
-                "uno",
+                "kkm",
                 LocalDateTime.now(),
-                "uno"
+                "kkm"
         );
     }
 
     private UserAccountDto createUserAccountDto() {
         return UserAccountDto.of(
-                "uno",
+                "kkm",
                 "password",
-                "uno@mail.com",
-                "Uno",
+                "kkm@mail.com",
+                "kkm",
                 "This is memo",
                 LocalDateTime.now(),
-                "uno",
+                "kkm",
                 LocalDateTime.now(),
-                "uno"
+                "kkm"
         );
     }
 
@@ -170,10 +171,10 @@ public class ArticleCommentServiceTest {
 
     private UserAccount createUserAccount() {
         return UserAccount.of(
-                "uno",
+                "kkm",
                 "password",
-                "uno@email.com",
-                "Uno",
+                "kkm@email.com",
+                "kkm",
                 null
         );
     }

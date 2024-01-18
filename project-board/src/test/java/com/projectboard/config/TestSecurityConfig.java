@@ -17,7 +17,7 @@ public class TestSecurityConfig {
     @MockBean private UserAccountRepository userAccountRepository;
 
     @BeforeTestMethod // 스프링 테스트에서만 가능
-    public void securitySetUp() {
+    void securitySetUp() {
         given(userAccountRepository.findById(anyString())).willReturn(Optional.of(UserAccount.of(
                 "kkmTest",
                 "pw",

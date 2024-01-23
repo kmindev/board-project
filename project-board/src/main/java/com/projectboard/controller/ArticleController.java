@@ -30,10 +30,12 @@ public class ArticleController {
     private final PaginationService paginationService;
 
     @GetMapping
-    public String articles(@RequestParam(required = false) SearchType searchType,
-                           @RequestParam(required = false) String searchValue,
-                           @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-                           ModelMap map) {
+    public String articles(
+            @RequestParam(required = false) SearchType searchType,
+            @RequestParam(required = false) String searchValue,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            ModelMap map
+    ) {
         Page<ArticleResponse> articles = articleService.searchArticles(searchType, searchValue, pageable).map(ArticleResponse::from);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
 
@@ -47,17 +49,20 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public String article(@PathVariable Long articleId, ModelMap map) {
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
+
         map.addAttribute("article", article);
-        map.addAttribute("articleComments", article.articleCommentResponses());
+        map.addAttribute("articleComments", article.articleCommentsResponse());
         map.addAttribute("totalCount", articleService.getArticleCount());
 
         return "articles/detail";
     }
 
     @GetMapping("/search-hashtag")
-    public String searchArticleHashtag(@RequestParam(required = false) String searchValue,
-                                       @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-                                       ModelMap map) {
+    public String searchArticleHashtag(
+            @RequestParam(required = false) String searchValue,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            ModelMap map
+    ) {
         Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
         List<String> hashtags = articleService.getHashtags();
@@ -78,8 +83,10 @@ public class ArticleController {
     }
 
     @PostMapping("/form")
-    public String postNewArticle(ArticleRequest articleRequest,
-                                 @AuthenticationPrincipal BoardPrincipal boardPrincipal) {
+    public String postNewArticle(
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
+            ArticleRequest articleRequest
+    ) {
         articleService.saveArticle(articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles";
@@ -96,19 +103,24 @@ public class ArticleController {
     }
 
     @PostMapping("/{articleId}/form")
-    public String updateArticle(@PathVariable Long articleId,
-                                ArticleRequest articleRequest,
-                                @AuthenticationPrincipal BoardPrincipal boardPrincipal) {
+    public String updateArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal,
+            ArticleRequest articleRequest
+    ) {
         articleService.updateArticle(articleId, articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles/" + articleId;
     }
 
     @PostMapping("/{articleId}/delete")
-    public String deleteArticle(@PathVariable Long articleId,
-                                @AuthenticationPrincipal BoardPrincipal boardPrincipal) {
-        articleService.deleteArticle(articleId, boardPrincipal.username());
+    public String deleteArticle(
+            @PathVariable Long articleId,
+            @AuthenticationPrincipal BoardPrincipal boardPrincipal
+    ) {
+        articleService.deleteArticle(articleId, boardPrincipal.getUsername());
 
         return "redirect:/articles";
     }
+
 }

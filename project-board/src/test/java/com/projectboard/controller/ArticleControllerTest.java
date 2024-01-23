@@ -6,6 +6,7 @@ import com.projectboard.domain.constant.FormStatus;
 import com.projectboard.domain.constant.SearchType;
 import com.projectboard.dto.ArticleDto;
 import com.projectboard.dto.ArticleWithCommentsDto;
+import com.projectboard.dto.HashtagDto;
 import com.projectboard.dto.UserAccountDto;
 import com.projectboard.dto.request.ArticleRequest;
 import com.projectboard.dto.response.ArticleResponse;
@@ -72,7 +73,8 @@ class ArticleControllerTest {
                 .andExpect(view().name("articles/index"))
                 .andExpect(model().attributeExists("articles"))
                 .andExpect(model().attributeExists("paginationBarNumbers"))
-                .andExpect(model().attributeExists("searchTypes"));
+                .andExpect(model().attributeExists("searchTypes"))
+                .andExpect(model().attribute("searchTypeHashtag", SearchType.HASHTAG));
         then(articleService).should().searchArticles(eq(null), eq(null), any(Pageable.class));
         then(paginationService).should().getPaginationBarNumbers(anyInt(), anyInt());
     }
@@ -160,7 +162,8 @@ class ArticleControllerTest {
                 .andExpect(view().name("articles/detail"))
                 .andExpect(model().attributeExists("article")) // 데이터(속성)가 있는지만 검사
                 .andExpect(model().attributeExists("articleComments"))
-                .andExpect(model().attribute("totalCount", totalCount));
+                .andExpect(model().attribute("totalCount", totalCount))
+                .andExpect(model().attribute("searchTypeHashtag", SearchType.HASHTAG));
         then(articleService).should().getArticleWithComments(articleId);
         then(articleService).should().getArticleCount();
     }
@@ -247,7 +250,7 @@ class ArticleControllerTest {
     @Test
     void givenNewArticleInfo_whenRequesting_thenSavesNewArticle() throws Exception {
         // Given
-        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content", "#new");
+        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content");
         willDoNothing().given(articleService).saveArticle(any(ArticleDto.class));
 
         // When & Then
@@ -301,7 +304,7 @@ class ArticleControllerTest {
     void givenUpdatedArticleInfo_whenRequesting_thenUpdatesNewArticle() throws Exception {
         // Given
         long articleId = 1L;
-        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content", "#new");
+        ArticleRequest articleRequest = ArticleRequest.of("new title", "new content");
         willDoNothing().given(articleService).updateArticle(eq(articleId), any(ArticleDto.class));
 
         // When & Then
@@ -344,7 +347,7 @@ class ArticleControllerTest {
                 createUserAccountDto(),
                 "title",
                 "content",
-                "#java"
+                Set.of(HashtagDto.of("java"))
         );
     }
 
@@ -355,7 +358,7 @@ class ArticleControllerTest {
                 Set.of(),
                 "title",
                 "content",
-                "#java",
+                Set.of(HashtagDto.of("java")),
                 LocalDateTime.now(),
                 "kkm",
                 LocalDateTime.now(),

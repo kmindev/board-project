@@ -1,13 +1,15 @@
 package com.projectboard.repostiory.querydsl;
 
+import com.projectboard.domain.Hashtag;
 import com.projectboard.domain.QHashtag;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import java.util.List;
 
-public class HashtagRepositoryCustomImpl extends QuerydslRepositorySupport implements HashtagRepositoryCustom{
-    public HashtagRepositoryCustomImpl(Class<?> domainClass) {
-        super(domainClass);
+public class HashtagRepositoryCustomImpl extends QuerydslRepositorySupport implements HashtagRepositoryCustom {
+
+    public HashtagRepositoryCustomImpl() {
+        super(Hashtag.class);
     }
 
     @Override
@@ -18,4 +20,5 @@ public class HashtagRepositoryCustomImpl extends QuerydslRepositorySupport imple
                 .select(hashtag.hashtagName)
                 .fetch();
     }
+
 }

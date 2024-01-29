@@ -42,10 +42,14 @@ import static org.mockito.BDDMockito.*;
 class ArticleServiceTest {
     @InjectMocks
     private ArticleService sut;
-    @Mock private HashtagService hashtagService;
-    @Mock private ArticleRepository articleRepository;
-    @Mock private UserAccountRepository userAccountRepository;
-    @Mock private HashtagRepository hashtagRepository;
+    @Mock
+    private HashtagService hashtagService;
+    @Mock
+    private ArticleRepository articleRepository;
+    @Mock
+    private UserAccountRepository userAccountRepository;
+    @Mock
+    private HashtagRepository hashtagRepository;
 
 
     /**

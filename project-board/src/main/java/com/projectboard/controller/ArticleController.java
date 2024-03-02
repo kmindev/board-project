@@ -6,7 +6,6 @@ import com.projectboard.dto.request.ArticleRequest;
 import com.projectboard.dto.response.ArticleResponse;
 import com.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.projectboard.dto.security.BoardPrincipal;
-
 import com.projectboard.service.ArticleService;
 import com.projectboard.service.PaginationService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package com.projectboard.controller;
 
-import com.projectboard.config.SecurityConfig;
 import com.projectboard.config.TestSecurityConfig;
 import com.projectboard.dto.ArticleCommentDto;
 import com.projectboard.dto.request.ArticleCommentRequest;
@@ -25,7 +24,6 @@ import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
 
 @DisplayName("View 컨트롤러 - 댓글")

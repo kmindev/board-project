@@ -3,7 +3,6 @@ package com.projectboard.dto;
 import com.projectboard.domain.Article;
 import com.projectboard.domain.UserAccount;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;

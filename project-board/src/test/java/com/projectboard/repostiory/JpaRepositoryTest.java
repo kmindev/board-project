@@ -1,8 +1,10 @@
 package com.projectboard.repostiory;
 
 import com.projectboard.domain.Article;
+import com.projectboard.domain.ArticleComment;
 import com.projectboard.domain.Hashtag;
 import com.projectboard.domain.UserAccount;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,15 +58,14 @@ class JpaRepositoryTest {
     @DisplayName("insert 테스트")
     @Test
     void givenTestData_whenInserting_thenWorksFine() {
-        // given
+        // Given
         long previousCount = articleRepository.count();
-        UserAccount userAccount = userAccountRepository.save(UserAccount.of("newkkm", "pw", null, null, null));
-
-        // when
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("newKkm", "pw", null, null, null));
         Article article = Article.of(userAccount, "new article", "new content");
         article.addHashtags(Set.of(Hashtag.of("spring")));
-
-        // then
+        // When
+        articleRepository.save(article);
+        // Then
         assertThat(articleRepository.count()).isEqualTo(previousCount + 1);
     }
 
@@ -137,6 +138,70 @@ class JpaRepositoryTest {
                 .containsExactly("fuscia");
         assertThat(articlePage.getTotalElements()).isEqualTo(17);
         assertThat(articlePage.getTotalPages()).isEqualTo(4);
+    }
+
+    @DisplayName("대댓글 조회 테스트")
+    @Test
+    void givenParentCommentId_whenSelecting_thenReturnsChildComments() {
+        // Given
+
+        // When
+        Optional<ArticleComment> parentComment = articleCommentRepository.findById(1L);
+
+        // Then
+        assertThat(parentComment).get()
+                .hasFieldOrPropertyWithValue("parentCommentId", null)
+                .extracting("childComments", InstanceOfAssertFactories.COLLECTION)
+                .hasSize(4);
+    }
+
+    @DisplayName("댓글에 대댓글 삽입 테스트")
+    @Test
+    void givenParentComment_whenSaving_thenInsertsChildComment() {
+        // Given
+        ArticleComment parentComment = articleCommentRepository.getReferenceById(1L);
+        ArticleComment childComment = ArticleComment.of(
+                parentComment.getArticle(),
+                parentComment.getUserAccount(),
+                "대댓글"
+        );
+
+        // When
+        parentComment.addChildComment(childComment);
+        articleCommentRepository.flush();
+
+        // Then
+        assertThat(articleCommentRepository.findById(1L)).get()
+                .hasFieldOrPropertyWithValue("parentCommentId", null)
+                .extracting("childComments", InstanceOfAssertFactories.COLLECTION)
+                .hasSize(5);
+    }
+
+    @DisplayName("댓글 삭제와 대댓글 전체 연동 삭제 테스트")
+    @Test
+    void givenArticleCommentHavingChildComments_whenDeletingParentComment_thenDeletesEveryComment() {
+        // Given
+        ArticleComment parentComment = articleCommentRepository.getReferenceById(1L);
+        long previousArticleCommentCount = articleCommentRepository.count();
+
+        // When
+        articleCommentRepository.delete(parentComment);
+
+        // Then
+        assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount - 5); // 테스트 댓글 + 대댓글 4개
+    }
+
+    @DisplayName("댓글 삭제와 대댓글 전체 연동 삭제 테스트 - 댓글 ID + 유저 ID")
+    @Test
+    void givenArticleCommentIdHavingChildCommentsAndUserId_whenDeletingParentComment_thenDeletesEveryComment() {
+        // Given
+        long previousArticleCommentCount = articleCommentRepository.count();
+
+        // When
+        articleCommentRepository.deleteByIdAndUserAccount_UserId(1L, "kkm");
+
+        // Then
+        assertThat(articleCommentRepository.count()).isEqualTo(previousArticleCommentCount - 5);
     }
 
     @EnableJpaAuditing

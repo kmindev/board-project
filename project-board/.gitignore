@@ -4,6 +4,8 @@
 ### Querydsl
 /src/main/generated
 
+.env
+
 ### Jpa Buddy
 .jpb
 

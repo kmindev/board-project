@@ -51,14 +51,6 @@ public class SecurityConfig {
                 .build();
     }
 
-    // spring boot 2.7 부터 warning 발생
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        // static resource, css - js
-//        // (PathRequest.toStaticResources().atCommonLocations() 정적 리소스에 대한 보편적인 경로를 담고 있음.
-//        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//    }
-
     @Bean
     public UserDetailsService userDetailsService(UserAccountService userAccountService) {
         return username -> userAccountService

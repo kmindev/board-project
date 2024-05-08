@@ -8,11 +8,8 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
-  config:
-    import: optional:file:.env[.properties]
-
   datasource:
-    url: jdbc:postgresql://localhost:${LOCAL_DB_PORT}/board
+    url: ${LOCAL_DB_URL}
     username: ${LOCAL_DB_USERNAME}
     password: ${LOCAL_DB_PASSWORD}
   jpa:

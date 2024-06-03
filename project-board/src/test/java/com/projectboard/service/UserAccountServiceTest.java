@@ -29,7 +29,7 @@ class UserAccountServiceTest {
     @Test
     void givenExistentUserId_whenSearching_thenReturnsOptionalUserData() {
         // Given
-        String username = "uno";
+        String username = "kkm";
         given(userAccountRepository.findById(username)).willReturn(Optional.of(createUserAccount(username)));
 
         // When
@@ -59,8 +59,8 @@ class UserAccountServiceTest {
     @Test
     void givenUserParams_whenSaving_thenSavesUserAccount() {
         // Given
-        UserAccount userAccount = createUserAccount("uno");
-        UserAccount savedUserAccount = createSigningUpUserAccount("uno");
+        UserAccount userAccount = createUserAccount("kkm");
+        UserAccount savedUserAccount = createSigningUpUserAccount("kkm");
         given(userAccountRepository.save(userAccount)).willReturn(savedUserAccount);
 
         // When

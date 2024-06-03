@@ -133,23 +133,23 @@ class ArticleWithCommentsResponseTest {
                 "content",
                 Set.of(HashtagDto.of("java")),
                 LocalDateTime.now(),
-                "uno",
+                "kkm",
                 LocalDateTime.now(),
-                "uno"
+                "kkm"
         );
     }
 
     private UserAccountDto createUserAccountDto() {
         return UserAccountDto.of(
-                "uno",
+                "kkm",
                 "password",
-                "uno@mail.com",
-                "Uno",
+                "kkm@mail.com",
+                "KKM",
                 "This is memo",
                 LocalDateTime.now(),
-                "uno",
+                "kkm",
                 LocalDateTime.now(),
-                "uno"
+                "kkm"
         );
     }
 
@@ -161,9 +161,9 @@ class ArticleWithCommentsResponseTest {
                 parentCommentId,
                 "test comment " + id,
                 createdAt,
-                "uno",
+                "kkm",
                 createdAt,
-                "uno"
+                "kkm"
         );
     }
 
@@ -172,9 +172,9 @@ class ArticleWithCommentsResponseTest {
                 id,
                 "test comment " + id,
                 createdAt,
-                "uno@mail.com",
-                "Uno",
-                "uno",
+                "kkm@mail.com",
+                "KKM",
+                "kkm",
                 parentCommentId
         );
     }

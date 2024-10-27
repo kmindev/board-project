@@ -1,17 +1,11 @@
-debug: false
+### 모든 profile 에 대해 적용 된다.
 management.endpoints.web.exposure.include: "*"
-
-logging:
-  level:
-    com.projectboard: debug
-    org.springframework.web.servlet: debug
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
 
 spring:
   datasource:
-    url: ${LOCAL_DB_URL}
-    username: ${LOCAL_DB_USERNAME}
-    password: ${LOCAL_DB_PASSWORD}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     open-in-view: false
     defer-datasource-initialization: true
